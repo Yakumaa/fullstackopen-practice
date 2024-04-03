@@ -6,12 +6,38 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 
+const mongoose = require('mongoose')
+
+const password = process.argv[2]
+
+const url =
+  `mongodb+srv://maharjanshrish8:${password}@cluster0.nzvzua0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+
+mongoose.set('strictQuery',false)
+
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  important: Boolean,
+})
+
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
+const Note = mongoose.model('Note', noteSchema)
+
 let notes = [
-  {
-    id: 1,
-    content: "HTML is easy",
-    important: true
-  },
+  // {
+  //   id: 1,
+  //   content: "HTML is easy",
+  //   important: true
+  // },
   {
     id: 2,
     content: "Browser can execute only JavaScript",
@@ -42,7 +68,10 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  Note.find({}).then(notes => {
+    console.log(notes)
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (request, response) => {
