@@ -32,12 +32,12 @@ noteSchema.set('toJSON', {
 
 const Note = mongoose.model('Note', noteSchema)
 
-let notes = [
-  // {
-  //   id: 1,
-  //   content: "HTML is easy",
-  //   important: true
-  // },
+let notes = new Note([
+  {
+    id: 1,
+    content: "HTML is easy",
+    important: true
+  },
   {
     id: 2,
     content: "Browser can execute only JavaScript",
@@ -48,7 +48,11 @@ let notes = [
     content: "GET and POST are the most important methods of HTTP protocol",
     important: true
   }
-]
+])
+
+notes.save().then(result => {
+  console.log('note saved!')
+})
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
