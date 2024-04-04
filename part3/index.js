@@ -32,27 +32,28 @@ noteSchema.set('toJSON', {
 
 const Note = mongoose.model('Note', noteSchema)
 
-let notes = new Note([
-  {
-    id: 1,
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: 2,
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-])
+// let notes = new Note([
+//   {
+//     // id: 1,
+//     content: "HTML is easy",
+//     important: true
+//   },
+//   {
+//     // id: 2,
+//     content: "Browser can execute only JavaScript",
+//     important: false
+//   },
+//   {
+//     // id: 3,
+//     content: "GET and POST are the most important methods of HTTP protocol",
+//     important: true
+//   }
+// ])
 
-notes.save().then(result => {
-  console.log('note saved!')
-})
+// notes.save().then(result => {
+//   console.log('note saved!')
+//   mongoose.connection.close()
+// })
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -76,6 +77,7 @@ app.get('/api/notes', (request, response) => {
     console.log(notes)
     response.json(notes)
   })
+  // mongoose.connection.close()
 })
 
 app.get('/api/notes/:id', (request, response) => {
