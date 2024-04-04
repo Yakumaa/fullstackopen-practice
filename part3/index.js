@@ -8,49 +8,23 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 
-const mongoose = require('mongoose')
-
-const password = process.argv[2]
-
-const url =
-  `mongodb+srv://maharjanshrish8:${password}@cluster0.nzvzua0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-
-mongoose.set('strictQuery',false)
-
-mongoose.connect(url)
-
-const noteSchema = new mongoose.Schema({
-  content: String,
-  important: Boolean,
-})
-
-noteSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
-
-const Note = mongoose.model('Note', noteSchema)
-
-// let notes = new Note([
-//   {
-//     // id: 1,
-//     content: "HTML is easy",
-//     important: true
-//   },
-//   {
-//     // id: 2,
-//     content: "Browser can execute only JavaScript",
-//     important: false
-//   },
-//   {
-//     // id: 3,
-//     content: "GET and POST are the most important methods of HTTP protocol",
-//     important: true
-//   }
-// ])
+let notes = [
+  // {
+  //   // id: 1,
+  //   content: "HTML is easy",
+  //   important: true
+  // },
+  // {
+  //   // id: 2,
+  //   content: "Browser can execute only JavaScript",
+  //   important: false
+  // },
+  // {
+  //   // id: 3,
+  //   content: "GET and POST are the most important methods of HTTP protocol",
+  //   important: true
+  // }
+]
 
 // notes.save().then(result => {
 //   console.log('note saved!')
@@ -83,15 +57,9 @@ app.get('/api/notes', (request, response) => {
 })
 
 app.get('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const note = notes.find(note => note.id === id)
-  
-  if (note) {
+  Note.findById(request.param.id).then(note => {
     response.json(note)
-  }
-  else {
-    response.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/notes/":id', (request, response) => {
@@ -101,12 +69,12 @@ app.delete('/api/notes/":id', (request, response) => {
   response.status(204).end()
 })
 
-const generateId = () => {
-  const maxId = notes.length > 0
-    ? Math.max(...notes.map(n => n.id))
-    : 0
-  return maxId + 1
-}
+// const generateId = () => {
+//   const maxId = notes.length > 0
+//     ? Math.max(...notes.map(n => n.id))
+//     : 0
+//   return maxId + 1
+// }
 
 app.post('/api/notes', (request, response) => {
   const body = request.body
@@ -117,15 +85,15 @@ app.post('/api/notes', (request, response) => {
     })
   }
 
-  const note = {
+  const note = new Note({
     content: body.content,
     important: Boolean(body.important) || false,
-    id: generateId(),
-  }
+    // id: generateId(),
+  })
 
-  notes = notes.concat(note)
-
-  response.json(note)
+  note.save().then(savedNote => {
+    response.json(savedNote)
+  })
 })
 
 app.use(unknownEndpoint)
