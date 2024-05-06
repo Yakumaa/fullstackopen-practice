@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test node --test",
     "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../part2 && npm run build && @powershell Copy-Item dist -Recurse ../part3",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
@@ -19,6 +19,7 @@
     "mongoose": "^8.2.4"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.0"
   }
 }
