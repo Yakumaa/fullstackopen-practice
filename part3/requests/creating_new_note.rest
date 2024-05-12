@@ -2,7 +2,7 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-  "content": "only working in root user?",
+  "content": "k bhairachaaa",
   "important": true,
   "userId": "66407e2516f338710fdd8611"
 }
