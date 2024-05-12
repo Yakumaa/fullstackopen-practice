@@ -2,6 +2,7 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-  "content": "postman is easy",
-  "important": true
+  "content": "only working in root user?",
+  "important": true,
+  "userId": "66407e2516f338710fdd8611"
 }
