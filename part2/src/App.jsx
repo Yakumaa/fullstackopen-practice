@@ -85,7 +85,7 @@ const App = () => {
 
     try{
       const user = await loginService.login({
-        username, password,
+        username, password
       })
       noteService.setToken(user.token)
       setUser(user)
@@ -164,10 +164,6 @@ const App = () => {
           />
         )}
       </ul>
-      <form onSubmit={addNote}>
-        <input value= {newNote} onChange={handleNoteChange}/>
-        <button type="submit">add</button>
-      </form>
       
       <Footer />
     </div>
