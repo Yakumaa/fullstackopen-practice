@@ -1,12 +1,12 @@
 describe('Note app', function () {
 	beforeEach(function () {
-		cy.request('POST', 'http://localhost:3001/api/testing/reset')
+		cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
 		const user = {
 			name: 'shrish',
 			username: 'admin',
 			password: '1234',
 		}
-		cy.request('POST', 'http://localhost:3001/api/users/', user)
+		cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
 		cy.visit('http://localhost:5173')
 	})
 
@@ -24,7 +24,7 @@ describe('Note app', function () {
 		cy.contains('shrish logged-in')
 	})
 
-	it.only('login fails with wrong password', function () {
+	it('login fails with wrong password', function () {
 		cy.contains('login').click()
 		cy.get('#username').type('mluukkai')
 		cy.get('#password').type('wrong')
@@ -40,10 +40,12 @@ describe('Note app', function () {
 
 	describe('when logged in', function () {
 		beforeEach(function () {
-			cy.contains('login').click()
-			cy.get('input:first').type('admin')
-			cy.get('input:last').type('1234')
-			cy.get('#login-button').click()
+			cy.login({ username: 'admin', password: '1234' })
+
+			// cy.contains('login').click()
+			// cy.get('input:first').type('admin')
+			// cy.get('input:last').type('1234')
+			// cy.get('#login-button').click()
 		})
 
 		it('a new note can be created', function () {
@@ -55,9 +57,10 @@ describe('Note app', function () {
 
 		describe('and a note exists', function () {
 			beforeEach(function () {
-				cy.contains('new note').click()
-				cy.get('input').type('another note cypress')
-				cy.contains('save').click()
+				cy.createNote({
+					content: 'another note cypress',
+					important: true,
+				})
 			})
 
 			it('it can be made not important', function () {
