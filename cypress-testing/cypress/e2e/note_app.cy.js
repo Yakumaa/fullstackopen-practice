@@ -7,7 +7,7 @@ describe('Note app', function () {
 			password: '1234',
 		}
 		cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
-		cy.visit('http://localhost:5173')
+		cy.visit('')
 	})
 
 	// it('front page can be opened', function () {
