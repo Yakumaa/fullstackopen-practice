@@ -1,5 +1,6 @@
 describe('Note app', function () {
 	beforeEach(function () {
+		cy.visit('')
 		cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
 		const user = {
 			name: 'shrish',
@@ -7,7 +8,6 @@ describe('Note app', function () {
 			password: '1234',
 		}
 		cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
-		cy.visit('')
 	})
 
 	// it('front page can be opened', function () {
