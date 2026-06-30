@@ -29,6 +29,11 @@
       "content": "new note",
       "important": true,
       "id": "jN0hX6nlr8Y"
+    },
+    {
+      "content": "new note again",
+      "important": true,
+      "id": "f4GiVfpln5c"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
